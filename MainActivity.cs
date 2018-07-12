@@ -5,6 +5,8 @@ using System;
 using System.Threading;
 using Android.Content;
 using Android.Preferences;
+using System.Threading.Tasks;
+using static SleepMonitor.Classes.DialogDisplayer;
 
 namespace SleepMonitor
 {
@@ -23,6 +25,8 @@ namespace SleepMonitor
 
         private Logic logic = new Logic();
 
+        private Classes.DialogDisplayer dialogDisplayer;
+
         #region Activity overrides
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -33,6 +37,7 @@ namespace SleepMonitor
             btnTimer = FindViewById<Button>(Resource.Id.btnTimer);
             btnHistory = FindViewById<Button>(Resource.Id.btnHistory);
             timerDelegate = new TimerCallback(UpdatetxtTimer);
+            dialogDisplayer = new Classes.DialogDisplayer(this);
             AddHandlers();
             if (savedInstanceState != null)
             {
@@ -131,15 +136,25 @@ namespace SleepMonitor
             }
             else if (timerOn)
             {
-                btnTimer.Text = "Start";
-                StopTimer();
-                timerOn = false;
+                TimeSpan timeslept = DateTime.Now.Subtract(startTime);
+                Task<MessageResult> task =  dialogDisplayer.ShowDialog("Confirmation", $"Time slept {timeslept.Hours}h {timeslept.Minutes}min. Is the time right? Yes - continue, No - adjust.",
+                    false, false, MessageResult.YES, MessageResult.NO);
+
+                if (task.Result == MessageResult.OK)
+                {
+                    btnTimer.Text = "Start";
+                    StopTimer();
+                    timerOn = false;
+                }
+                else if (task.Result == MessageResult.NO)
+                {
+
+                }
             }
         }
 
         private void ShowHistory(object sender, EventArgs e)
-        {
-            logic.WriteTestFile();
+        {            
             Intent intent = new Intent(this, (new HistoryActivity()).Class);
             StartActivity(intent);
         }

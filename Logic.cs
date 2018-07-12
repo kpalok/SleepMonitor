@@ -58,6 +58,8 @@ namespace SleepMonitor
             FileStream fileStream = new FileStream(filename, FileMode.CreateNew);
             XmlSerializer writer = new XmlSerializer(typeof(Nights));
             writer.Serialize(fileStream, nights);
+            fileStream.Flush();
+            fileStream.Dispose();
         }
 
         public void WriteTestFile()
@@ -127,7 +129,7 @@ namespace SleepMonitor
             List<double> nightsInMinutes = new List<double>();
 
             List<Night> weekEndNights = (from Night night in nights
-                                         where night.EndTime.DayOfWeek == DayOfWeek.Saturday &&
+                                         where night.EndTime.DayOfWeek == DayOfWeek.Saturday ||
                                          night.EndTime.DayOfWeek == DayOfWeek.Sunday
                                          select night).ToList();
 

@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace SleepMonitor
 {
-    [Activity(Label = "HistoryActivity")]
+    [Activity(Label = "Sleep statistics")]
     public class HistoryActivity : Activity
     {
         private Nights nights;
@@ -45,8 +45,7 @@ namespace SleepMonitor
             BindMeanTimes();
             BindPercentages();
             BindBest();
-            BindWorst();//eitoimi
-            
+            BindWorst();         
         }
 
         private void BindLastTenNightsTxt()
@@ -67,7 +66,7 @@ namespace SleepMonitor
         {
             TimeSpan overallMean = logic.CalculateOverallMeanTime(nights.NightList);
             TimeSpan weekdayMean = logic.CalculateWeekDayMeanTime(nights.NightList);
-            TimeSpan weekendMean = logic.CalculateWeekEndMeanTime(nights.NightList);//eitoimi
+            TimeSpan weekendMean = logic.CalculateWeekEndMeanTime(nights.NightList);
 
             RunOnUiThread(() => txtOverallMean.Text = $"{overallMean.Hours}h {overallMean.Minutes}min");
             RunOnUiThread(() => txtWeekdayMean.Text = $"{weekdayMean.Hours}h {weekdayMean.Minutes}min");
@@ -96,7 +95,7 @@ namespace SleepMonitor
             DayOfWeek worstDay = logic.GetWorstDay(nights.NightList).Item1;
             TimeSpan worstMean = logic.GetWorstDay(nights.NightList).Item2;
 
-            RunOnUiThread(() => txtBestNight.Text = $"{Enum.GetName(typeof(DayOfWeek), worstDay)} mean: {worstMean.Hours}h {worstMean.Minutes}min");
+            RunOnUiThread(() => txtWorstNight.Text = $"{Enum.GetName(typeof(DayOfWeek), worstDay)} mean: {worstMean.Hours}h {worstMean.Minutes}min");
         }
     }
 }

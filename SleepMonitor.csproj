@@ -54,6 +54,8 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdjusterActivity.cs" />
+    <Compile Include="Classes\DialogDisplayer.cs" />
     <Compile Include="NightRecentFirst.cs" />
     <Compile Include="Classes\Nights.cs" />
     <Compile Include="Logic.cs" />
@@ -86,6 +88,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\History.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Adjuster.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
